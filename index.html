@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>라탄 등공예 체험</title>
+  <style>
+    body {
+      font-family: sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    header, footer {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      padding: 20px;
+    }
+    .icon {
+      width: 60px;
+      height: 60px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      border-radius: 10px;
+    }
+    .icon.selected {
+      border-color: #ff9900;
+    }
+    #result {
+      margin: 30px 0;
+    }
+    #result img {
+      max-width: 300px;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>라탄 등공예 체험하기</h1>
+
+  <!-- 상단 : 패턴 아이콘 -->
+  <header>
+    <img src="images/pattern1.png" class="icon pattern" data-pattern="1" alt="패턴1">
+    <img src="images/pattern2.png" class="icon pattern" data-pattern="2" alt="패턴2">
+    <img src="images/pattern3.png" class="icon pattern" data-pattern="3" alt="패턴3">
+  </header>
+
+  <!-- 결과 표시 영역 -->
+  <div id="result">
+    <p>원하는 패턴과 등모양을 선택해보세요!</p>
+  </div>
+
+  <!-- 하단 : 등모양 아이콘 -->
+  <footer>
+    <img src="images/lamp1.png" class="icon lamp" data-lamp="1" alt="등1">
+    <img src="images/lamp2.png" class="icon lamp" data-lamp="2" alt="등2">
+    <img src="images/lamp3.png" class="icon lamp" data-lamp="3" alt="등3">
+    <img src="images/lamp4.png" class="icon lamp" data-lamp="4" alt="등4">
+    <img src="images/lamp5.png" class="icon lamp" data-lamp="5" alt="등5">
+  </footer>
+
+  <script>
+    let selectedPattern = null;
+    let selectedLamp = null;
+
+    const resultDiv = document.getElementById("result");
+
+    // 패턴 버튼 클릭
+    document.querySelectorAll(".pattern").forEach(icon => {
+      icon.addEventListener("click", () => {
+        // 선택 상태 표시
+        document.querySelectorAll(".pattern").forEach(i => i.classList.remove("selected"));
+        icon.classList.add("selected");
+
+        selectedPattern = icon.dataset.pattern;
+        updateResult();
+      });
+    });
+
+    // 등 버튼 클릭
+    document.querySelectorAll(".lamp").forEach(icon => {
+      icon.addEventListener("click", () => {
+        // 선택 상태 표시
+        document.querySelectorAll(".lamp").forEach(i => i.classList.remove("selected"));
+        icon.classList.add("selected");
+
+        selectedLamp = icon.dataset.lamp;
+        updateResult();
+      });
+    });
+
+    // 결과 업데이트 함수
+    function updateResult() {
+      if (selectedPattern && selectedLamp) {
+        // 패턴+등 합친 이미지
+        resultDiv.innerHTML = `<img src="images/pattern${selectedPattern}_lamp${selectedLamp}.png" alt="완성된 등공예">`;
+      } else if (selectedPattern) {
+        // 패턴만 선택했을 때
+        resultDiv.innerHTML = `<img src="images/pattern${selectedPattern}_alone.png" alt="패턴 이미지">`;
+      } else {
+        // 아무것도 없을 때
+        resultDiv.innerHTML = "<p>원하는 패턴과 등모양을 선택해보세요!</p>";
+      }
+    }
+  </script>
+</body>
+</html>
