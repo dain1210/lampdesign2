@@ -1,105 +1,123 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>라탄 등공예 체험</title>
   <style>
-    body {
-      font-family: sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    header, footer {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      padding: 20px;
-    }
-    .icon {
-      width: 60px;
-      height: 60px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      border-radius: 10px;
-    }
-    .icon.selected {
-      border-color: #ff9900;
-    }
-    #result {
-      margin: 30px 0;
-    }
-    #result img {
-      max-width: 300px;
-      border: 1px solid #ccc;
-      border-radius: 10px;
-    }
+    body { font-family: sans-serif; text-align: center; margin: 0; padding: 0; }
+    header, footer { display: flex; justify-content: center; gap: 20px; padding: 20px; flex-wrap: wrap; }
+    .icon { width: 60px; height: 60px; cursor: pointer; border: 2px solid transparent; border-radius: 10px; object-fit: cover; }
+    .icon.selected { border-color: #ff9900; }
+    #result { margin: 30px 0; }
+    #result img { max-width: 300px; border: 1px solid #ccc; border-radius: 10px; }
   </style>
 </head>
 <body>
   <h1>라탄 등공예 체험하기</h1>
 
   <!-- 상단 : 패턴 아이콘 -->
-  <header>
-    <img src="images/pattern1.png" class="icon pattern" data-pattern="1" alt="패턴1">
-    <img src="images/pattern2.png" class="icon pattern" data-pattern="2" alt="패턴2">
-    <img src="images/pattern3.png" class="icon pattern" data-pattern="3" alt="패턴3">
+  <header id="patternHeader">
+    <img class="icon pattern" data-pattern="1" alt="패턴1">
+    <img class="icon pattern" data-pattern="2" alt="패턴2">
+    <img class="icon pattern" data-pattern="3" alt="패턴3">
   </header>
 
-  <!-- 결과 표시 영역 -->
-  <div id="result">
-    <p>원하는 패턴과 등모양을 선택해보세요!</p>
-  </div>
+  <div id="result"><p>원하는 패턴과 등모양을 선택해보세요!</p></div>
 
-  <!-- 하단 : 등모양 아이콘 -->
-  <footer>
-    <img src="images/lamp1.png" class="icon lamp" data-lamp="1" alt="등1">
-    <img src="images/lamp2.png" class="icon lamp" data-lamp="2" alt="등2">
-    <img src="images/lamp3.png" class="icon lamp" data-lamp="3" alt="등3">
-    <img src="images/lamp4.png" class="icon lamp" data-lamp="4" alt="등4">
-    <img src="images/lamp5.png" class="icon lamp" data-lamp="5" alt="등5">
+  <!-- 하단 : 등 아이콘 -->
+  <footer id="lampFooter">
+    <img class="icon lamp" data-lamp="1" alt="등1">
+    <img class="icon lamp" data-lamp="2" alt="등2">
+    <img class="icon lamp" data-lamp="3" alt="등3">
+    <img class="icon lamp" data-lamp="4" alt="등4">
+    <img class="icon lamp" data-lamp="5" alt="등5">
   </footer>
 
   <script>
     let selectedPattern = null;
     let selectedLamp = null;
-
     const resultDiv = document.getElementById("result");
 
-    // 패턴 버튼 클릭
+    // 패턴 아이콘 3개
+    const patternIcons = [
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3496.png",
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3497.png",
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3498.png"
+    ];
+
+    // 램프 아이콘 5개
+    const lampIcons = [
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3499.png",
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3485.png",
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3501.png",
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3502.png",
+      "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3503.png"
+    ];
+
+    // 패턴 단독 3개
+    const patternAloneImages = {
+      "1": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3493.png",
+      "2": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3494.png",
+      "3": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3495.png"
+    };
+
+    // 패턴 × 램프 조합 15개
+    const combinedImages = {
+      "1_1": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3506.png",
+      "1_2": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3505.png",
+      "1_3": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3511.png",
+      "1_4": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3514.png",
+      "1_5": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3517.png",
+      "2_1": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3507.png",
+      "2_2": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3504.png",
+      "2_3": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3510.png",
+      "2_4": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3513.png",
+      "2_5": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3516.png",
+      "3_1": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3509.png",
+      "3_2": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3508.png",
+      "3_3": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3512.png",
+      "3_4": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3515.png",
+      "3_5": "https://raw.githubusercontent.com/dain1210/lampdesign2/main/IMG_3518.png"
+    };
+
+    // 아이콘 src 자동 세팅
+    document.querySelectorAll(".pattern").forEach((el) => {
+      const idx = Number(el.dataset.pattern) - 1;
+      el.src = patternIcons[idx];
+    });
+
+    document.querySelectorAll(".lamp").forEach((el) => {
+      const idx = Number(el.dataset.lamp) - 1;
+      el.src = lampIcons[idx];
+    });
+
+    // 패턴 클릭
     document.querySelectorAll(".pattern").forEach(icon => {
       icon.addEventListener("click", () => {
-        // 선택 상태 표시
         document.querySelectorAll(".pattern").forEach(i => i.classList.remove("selected"));
         icon.classList.add("selected");
-
         selectedPattern = icon.dataset.pattern;
         updateResult();
       });
     });
 
-    // 등 버튼 클릭
+    // 램프 클릭
     document.querySelectorAll(".lamp").forEach(icon => {
       icon.addEventListener("click", () => {
-        // 선택 상태 표시
         document.querySelectorAll(".lamp").forEach(i => i.classList.remove("selected"));
         icon.classList.add("selected");
-
         selectedLamp = icon.dataset.lamp;
         updateResult();
       });
     });
 
-    // 결과 업데이트 함수
     function updateResult() {
       if (selectedPattern && selectedLamp) {
-        // 패턴+등 합친 이미지
-        resultDiv.innerHTML = `<img src="images/pattern${selectedPattern}_lamp${selectedLamp}.png" alt="완성된 등공예">`;
+        const key = `${selectedPattern}_${selectedLamp}`;
+        resultDiv.innerHTML = `<img src="${combinedImages[key]}" alt="완성된 등공예">`;
       } else if (selectedPattern) {
-        // 패턴만 선택했을 때
-        resultDiv.innerHTML = `<img src="images/pattern${selectedPattern}_alone.png" alt="패턴 이미지">`;
+        resultDiv.innerHTML = `<img src="${patternAloneImages[selectedPattern]}" alt="패턴 이미지">`;
       } else {
-        // 아무것도 없을 때
         resultDiv.innerHTML = "<p>원하는 패턴과 등모양을 선택해보세요!</p>";
       }
     }
